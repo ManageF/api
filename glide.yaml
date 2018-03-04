@@ -1,0 +1,10 @@
+package: github.com/managef/api
+import:
+- package: github.com/golang/net/
+  version: 22ae77b79946ea320088417e4d50825671d82d57
+- package: google.golang.org/grpc
+  version: 8e4536a86ab602859c20df5ebfd0bd4228d08655
+- package: github.com/gorilla/mux
+  version: 53c1911da2b537f792e7cafcb446b05ffe33b996
+- package: github.com/golang/glog
+  version: 23def4e6c14b4da8ac2ed8007337bc5eb5007998
