@@ -1,4 +1,4 @@
-package service
+package handlers
 
 import (
 	"net/http"
@@ -10,6 +10,6 @@ type Api struct{
 	Name    string
 }
 func GetApi(w http.ResponseWriter, r *http.Request) {
-	log.Error("get Api request")
+	log.Info("get Api request")
 	json.NewEncoder(w).Encode(Api{Name: "Hello to ManageF"})
 }

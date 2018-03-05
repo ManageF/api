@@ -13,6 +13,9 @@ DOCKER_NAME ?= ${DOCKER_ACCOUNT}/${BUILD_NAME}
 DOCKER_VERSION ?= dev
 DOCKER_TAG = ${DOCKER_NAME}:${DOCKER_VERSION}
 
+CONSOLE_VERSION ?= latest
+CONSOLE_LOCAL_DIR ?= ../../../../ui
+
 # The minimum Go version that must be used to build the app.
 GO_VERSION_MANAGEF = 1.8.3
 
@@ -26,7 +29,7 @@ all: build
 
 clean:
 	@echo Cleaning...
-	@rm -f sws
+	@rm -f api
 	@rm -rf ${GOPATH}/bin/${BUILD_NAME}
 	@rm -rf ${GOPATH}/pkg/*
 	@rm -rf _output/*
@@ -58,12 +61,30 @@ dep-update:
 	@echo Updating dependencies and storing in vendor directory
 	@glide update --strip-vendor
 
-.prepare-docker-image-files:
+#
+# cloud targets - building images and deploying
+#
+
+.get-console:
+	@rm -rf ${GOPATH}/_output/docker/${BUILD_NAME} && mkdir -p ${GOPATH}/_output/docker/${BUILD_NAME}
+ifeq ("${CONSOLE_VERSION}", "local")
+	echo "Copying local console files from ${CONSOLE_LOCAL_DIR}"
+	rm -rf ${GOPATH}/_output/docker/${BUILD_NAME}/console && mkdir ${GOPATH}/_output/docker/${BUILD_NAME}/console
+	cp -r ${CONSOLE_LOCAL_DIR}/build/* ${GOPATH}/_output/docker/${BUILD_NAME}/console
+else
+	@if [ ! -d "_output/docker/console" ]; then \
+		echo "Downloading console (${CONSOLE_VERSION})..." ; \
+		mkdir ${GOPATH}/_output/docker/${BUILD_NAME}/console ; \
+		curl $$(npm view managef-ui@${CONSOLE_VERSION} dist.tarball) \
+		| tar zxf - --strip-components=2 --directory ${GOPATH}/_output/docker/${BUILD_NAME}/console package/build ; \
+	fi
+endif
+
+.prepare-docker-image-files: .get-console
 	@echo Preparing docker image files...
 	@mkdir -p ${GOPATH}/_output/docker/${BUILD_NAME}
-	@cp -r deploy/docker/* ${GOPATH}/_output/docker/${BUILD_NAME}/
-	@cp ${GOPATH}/bin/${BUILD_NAME} ${GOPATH}/_output/docker/${BUILD_NAME}/
-	@echo ${DOCKER_TAG}
+	@cp -r deploy/docker/* ${GOPATH}/_output/docker/${BUILD_NAME}
+	@cp ${GOPATH}/bin/${BUILD_NAME} ${GOPATH}/_output/docker/${BUILD_NAME}
 
 docker: .prepare-docker-image-files
 	@echo Building docker image into local docker daemon...
@@ -80,9 +101,9 @@ docker-push:
 		echo "Enabling ingress support to minikube" ; \
 		minikube addons enable ingress ; \
 	fi
-	@grep -q sws /etc/hosts ; \
+	@grep -q managef /etc/hosts ; \
 	if [ "$$?" != "0" ]; then \
-		echo "/etc/hosts should have SWS so you can access the ingress"; \
+		echo "/etc/hosts should have ManageF so you can access the ingress"; \
 	fi
 
 minikube-docker: .prepare-minikube .prepare-docker-image-files

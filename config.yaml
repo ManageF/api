@@ -1,0 +1,16 @@
+server:
+  address: localhost
+  port: 8000
+
+  # Uncomment credentials to enable basic authentication for server
+  # credentials:
+  #   username: u
+  #   password: p
+
+  # Uncomment static_content_root_directory to set up a different directory for static front-end content.
+  # Default is /static-files
+  # static_content_root_directory: /static-files
+
+  # Uncomment cors_allow_all to allow serving front-end from a different host (mainly for development)
+  # Default is false
+  # cors_allow_all: true

@@ -1,4 +1,4 @@
-package job
+package handlers
 
 import (
 	"net/http"

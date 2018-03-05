@@ -7,5 +7,6 @@ ENV MANAGEF_API_HOME=/opt/managef \
 
 COPY managef_api $MANAGEF_API_HOME/
 
+ADD console $MANAGEF_API_HOME/console/
 
 ENTRYPOINT ["/opt/managef/managef_api"]
