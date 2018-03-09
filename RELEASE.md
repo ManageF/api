@@ -21,7 +21,7 @@ $ git commit -m "New release"
 $ git push origin master
 ```
 
-NOTE: At this point, Travis will run the test suite, build the binary, and push the "latest" docker images to [DockerHub](https://hub.docker.com/r/aljesusg/managef-api/).
+NOTE: At this point, Travis will run the test suite, build the binary, and push the "latest" docker images to [DockerHub](https://hub.docker.com/r/aljesusg/managef_api/).
 
 3) Once Travis is "green" (which confirms all tests have passed and the latest images have been pushed to DockerHub), you can now tag the release. For example,
 
@@ -44,7 +44,7 @@ There is now a git tag that marks the code that produced the release and there a
 
 * [Git tags]()https://github.com/managef/api/tags)
 * DockerHub images:
-** [ManageF-API](https://hub.docker.com/r/aljesusg/managef-api/tags/)
+** [ManageF-API](https://hub.docker.com/r/aljesusg/managef_api/tags/)
 
 == How It Works
 
