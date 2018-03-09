@@ -17,7 +17,7 @@ CONSOLE_VERSION ?= latest
 CONSOLE_LOCAL_DIR ?= ../../../../ui
 
 # The minimum Go version that must be used to build the app.
-GO_VERSION_MANAGEF = 1.8.3
+GO_VERSION_MANAGEF = 1.9.4
 
 # Environment variables set when running the Go compiler.
 GO_BUILD_ENVVARS = \
