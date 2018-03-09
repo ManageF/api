@@ -2,7 +2,7 @@
 
 This document gives the steps required to perform a release of ManageF. This document is only useful to ManageF release managers.
 
-== Steps
+## Steps
 
 The steps to perform a release are very simple and easy to execute thanks to the way [Travis](.travis.yml) is setup.
 Before running these steps, it is assumed the [master](https://github.com/managef/api/tree/master) branch is all up to date and includes all code that is to be released.
@@ -33,20 +33,20 @@ $ git push --tags
 NOTE: Once the tag has been pushed, Travis will immediately run another build but this time will tag the docker images with the same version string as the git tag name.
 In the example above, the docker images pushed to DockerHub will not be tagged with "latest" but will instead be tagged with "1.0.0.Final."
 
-== Prepare For The Next Release
+## Prepare For The Next Release
 
 Now that the release is done, you will want to bump up the version with a new version so any future master ("latest") builds will be given the new future version. Preferrably you should use a version with "SNAPSHOT" in it to indicate it is not a release but instead a work in progress (e.g. `1.0.1.Final-SNAPSHOT`). So simply repeat step (1) with the snapshot version string.
 
-== Finished Product
+## Finished Product
 
 Once the above steps have been performed, the release is complete.
 There is now a git tag that marks the code that produced the release and there are DockerHub images for that release.
 
-* [Git tags]()https://github.com/managef/api/tags)
+* [Git tags](https://github.com/managef/api/tags)
 * DockerHub images:
-** [ManageF-API](https://hub.docker.com/r/aljesusg/managef_api/tags/)
+   * [ManageF-API](https://hub.docker.com/r/aljesusg/managef_api/tags/)
 
-== How It Works
+## How It Works
 
 Most of the magic is set up in the [travis](.travis.yml) file.
 
