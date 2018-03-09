@@ -16,6 +16,10 @@ notifications:
 before_script:
   - GO_FILES=$(find . -iname '*.go' -type f | grep -v /vendor/) # All the .go files, excluding vendor/
   - make dep-install; make dep-update
+  - go get -v github.com/alecthomas/gometalinter
+  - gometalinter --install
+  - go get golang.org/x/tools/cmd/cover
+  - go get -v github.com/mattn/goveralls
 
 # The project committed the vendor directory into source so there is no need for
 # travis to install dep and pull down dependencies.
@@ -27,8 +31,17 @@ before_script:
 #- make dep-update
 
 script:
-  #- if [ ! -z "$(gofmt -l ${GO_FILES})" ]; then echo "These files need to be formatted:" "$(gofmt -l ${GO_FILES})";echo "Diff files:"; gofmt -d ${GO_FILES}; exit 1; fi # Gofmt Linter
+  - export PATH=$PATH:$HOME/gopath/bin
+  - export GORACE="halt_on_error=1"
+  - test -z "$(gometalinter --disable-all
+    --enable=gofmt
+    --enable=golint
+    --enable=vet
+    --enable=gosimple
+    --enable=unconvert
+    --deadline=4m ./spew | tee /dev/stderr)"
   - make clean build test
+  - make CI-Coverage
 # Push the docker images to docker hub
 # If a tag build, use the tag as docker version; otherwise, use branch name as docker version (where master==latest)
 after_success:
